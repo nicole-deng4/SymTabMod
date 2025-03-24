@@ -128,7 +128,7 @@ static void SymTable_expand(SymTable_T oSymTable) {
     free (oSymTable -> buckets);
     oSymTable -> buckets = newBuckets;
     oSymTable -> totalNumBuckets = newBucketCount;
-    oSymTable->expandIndex++;
+    oSymTable -> expandIndex++;
 }
 
 /* Returns 1 if a new binding with key pcKey and value pvValue was successfully added to oSymTable, returns 0 if it was unsuccessful */
