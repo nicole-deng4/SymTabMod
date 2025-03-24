@@ -9,15 +9,20 @@ This file implements a symbol table of string keys and void pointer values using
 
 /* Defines a linked list node that stores a key-value pair. */
 typedef struct Node {
-  char *key; /* The key of this binding, stored as a dynamically allocated array of characters. */
-  void *value; /* The value of this binding, stored as a generic pointer. */
-  struct Node *next; /* Pointer to the next node in the linked list. */
+  /* The key of this binding, stored as a dynamically allocated array of characters. */
+  char *key; 
+  /* The value of this binding, stored as a generic pointer. */
+  void *value; 
+  /* Pointer to the next node in the linked list. */
+  struct Node *next; 
 } Node;
 
 /* Defines a symbol table structure. */
 struct SymTable {
-  struct Node *first; /* Pointer to the first node in the linked list. */
-  size_t length; /* The total number of key-value bindings in the symbol table. */
+  /* Pointer to the first node in the linked list. */
+  struct Node *first; 
+  /* The total number of key-value bindings in the symbol table. */
+  size_t length; 
 };
 
 /* Creates a new symbol table and returns a pointer to it */
