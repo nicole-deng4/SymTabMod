@@ -2,6 +2,8 @@
 #define SYMTABLE_H
 #include <stddef.h>
 
+typedef struct SymTable *SymTable_T;
+
 /* Creates a new symbol table and returns a pointer to it */
 SymTable_T SymTable_new(void);
 
@@ -32,3 +34,5 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey);
 void SymTable_map(SymTable_T oSymTable,
   void (*pfApply)(const char *pcKey, void *pvValue, void *pvExtra), 
   const void *pvExtra);
+
+#endif
