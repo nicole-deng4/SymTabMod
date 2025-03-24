@@ -77,7 +77,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
 
 void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *currNode;
-  Void *ogValue;
+  void *ogValue;
   assert (oSymTable);
   assert (pcKey);
 
