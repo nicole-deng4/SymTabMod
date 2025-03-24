@@ -21,7 +21,7 @@ int SymTable_put(SymTable_T oSymTable,
 void *SymTable_replace(SymTable_T oSymTable,
   const char *pcKey, const void *pvValue);
 
-/* Returns 1 if oSymTable has a binding for pcKey, returns 1 if it doesn't */
+/* Returns 1 if oSymTable has a binding for pcKey, returns 0 if it doesn't */
 int SymTable_contains(SymTable_T oSymTable, const char *pcKey);
 
 /* Returns the value bound to pcKey or NULL if not found */
