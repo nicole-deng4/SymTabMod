@@ -178,7 +178,6 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvVa
   size_t hashIndex;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
-  assert (pvValue != NULL);
   
   hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
   currBucket = oSymTable -> buckets [hashIndex];
