@@ -4,9 +4,9 @@
 #include <string.h>
 
 typedef struct Node {
-  char* key;
-  void* value;
-  struct Node* next;
+  char *key;
+  void *value;
+  struct Node *next;
 } Node;
 
 struct SymTable {
@@ -77,7 +77,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
 
 void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *currNode;
-  Node *ogValue;
+  Void *ogValue;
   assert (oSymTable);
   assert (pcKey);
 
