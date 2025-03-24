@@ -54,13 +54,14 @@ static size_t SymTable_hash(const char *pcKey, size_t uBucketCount)
 /* Creates a new symbol table and returns a pointer to it */
 SymTable_T SymTable_new(void) {
     SymTable_T oSymTable = (SymTable_T) malloc (sizeof (struct SymTable));
-    if (osymTable == NULL) {
+    if (oSymTable == NULL) {
       return NULL;
     }
   
     oSymTable -> totalNumBuckets = INITIAL_BUCKET_COUNT;
     oSymTable -> length = 0;
     oSymTable -> buckets = (Node **) calloc (oSymTable -> totalNumBuckets, sizeof(Node *));
+    oSymTable -> expandIndex = 0;
 
     if (oSymTable -> buckets == NULL) {
       free(oSymTable);
@@ -102,7 +103,7 @@ static void SymTable_expand(SymTable_T oSymTable) {
     Node *nextBucket;
     size_t newIndex;
   
-    if (oSymTable -> expandIndex >= NUM_PRIMES - 1) {
+    if (oSymTable -> expandIndex >= NUM_PRIMES - 1 || oSymTable -> totalNumBuckets >= PRIME_BUCKET_SIZES[NUM_PRIMES - 1]) {
         return;
     }
     
@@ -120,7 +121,7 @@ static void SymTable_expand(SymTable_T oSymTable) {
             newIndex = SymTable_hash(currBucket->key, newBucketCount);
             currBucket -> next = newBuckets[newIndex];
             newBuckets[newIndex] = currBucket;
-            currBucket = next;
+            currBucket = nextBucket;
         }
     }
     
@@ -135,8 +136,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *newNode;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
-  assert (pvValue != NULL);
-
+  
   if (!SymTable_contains (oSymTable, pcKey)) {
     size_t hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
     newNode = (Node*) malloc (sizeof(Node));
@@ -181,7 +181,9 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvVa
 
   while (currBucket != NULL) {
     if (strcmp (currBucket -> key, pcKey) == 0) {
+      ogValue = currBucket -> value;
       currBucket -> value = (void *) pvValue;
+      return ogValue;
     }
     currBucket = currBucket -> next;
   }
@@ -230,7 +232,7 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey) {
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
 
-  size_t hashIndex = SymTable_hash(pcKey, oSymTable->bucketCount);  
+  size_t hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);  
   currBucket = oSymTable -> buckets [hashIndex];  
   prevBucket = NULL;
     
