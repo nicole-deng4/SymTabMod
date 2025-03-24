@@ -150,5 +150,11 @@ return NULL;
 }
 
 void SymTable_map(SymTable_T oSymTable, void (*pfApply)(const char *pcKey, void *pvValue, void *pvExtra), const void *pvExtra) {
-  
+  assert (oSymTable);
+  assert (pfApply);
+  Node *currNode = oSymTable -> head;
+  while (currNode != NULL) {
+    (*pfApply)(currNode -> key, currNode -> value, pvExtra);
+        currNode = currNode -> next;
+  }
 }
