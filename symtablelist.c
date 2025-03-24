@@ -1,19 +1,26 @@
+/* SymTable Linked List Implementation:
+This file implements a symbol table of string keys and void pointer values using a linked list data structure.
+*/
+
 #include "symtable.h"
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
+/* Defines a linked list node that stores a key-value pair. */
 typedef struct Node {
   char *key;
   void *value;
   struct Node *next;
 } Node;
 
+/* Defines a symbol table structure. */
 struct SymTable {
   struct Node *first;
   size_t length;
 };
 
+/* Creates a new symbol table and returns a pointer to it */
 SymTable_T SymTable_new(void) {
   SymTable_T symTable = (SymTable_T) malloc (sizeof (struct SymTable));
   if (symTable == NULL) {
@@ -24,6 +31,7 @@ SymTable_T SymTable_new(void) {
   return symTable;
 }
 
+/* Frees all the memory taken by oSymTable */
 void SymTable_free(SymTable_T oSymTable) {
   Node *currNode;
   Node *nextNode;
@@ -38,11 +46,13 @@ void SymTable_free(SymTable_T oSymTable) {
     free(oSymTable);
 }
 
+/* Returns the number of bindings in oSymTable */
 size_t SymTable_getLength(SymTable_T oSymTable) {
   assert (oSymTable != NULL);
   return (oSymTable -> length);
 }
 
+/* Returns 1 if a new binding with key pcKey and value pvValue was successfully added to oSymTable, returns 0 if it was unsuccessful */
 int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *newNode;
   assert (oSymTable != NULL);
@@ -75,6 +85,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   }
 }
 
+/* Replaces the value bound to pcKey with pvValue in oSymTable. */
 void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *currNode;
   void *ogValue;
@@ -94,6 +105,7 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvVa
   return NULL;
 }
 
+/* Returns 1 if oSymTable has a binding for pcKey, returns 0 if it doesn't */
 int SymTable_contains(SymTable_T oSymTable, const char *pcKey) {
   Node *currNode;
   assert (oSymTable != NULL);
@@ -110,6 +122,7 @@ int SymTable_contains(SymTable_T oSymTable, const char *pcKey) {
   return 0;
 }
 
+/* Returns the value bound to pcKey or NULL if not found in oSymTable. */
 void *SymTable_get(SymTable_T oSymTable, const char *pcKey) {
   Node *currNode;
   assert (oSymTable != NULL);
@@ -126,6 +139,7 @@ void *SymTable_get(SymTable_T oSymTable, const char *pcKey) {
   return NULL;
 }
 
+/* Removes the value bound to pcKey, returns the removed value or NULL if not found in oSymTable. */
 void *SymTable_remove(SymTable_T oSymTable, const char *pcKey) {
   Node *currNode;
   Node *prevNode;
@@ -158,6 +172,8 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey) {
 return NULL;   
 }
 
+/* Applies the function pointed to by pfApply to each binding with key pcKey and value pvValue in the oSymTable, passing an additional 
+user-specified argument pvExtra. */
 void SymTable_map(SymTable_T oSymTable, void (*pfApply)(const char *pcKey, void *pvValue, void *pvExtra), const void *pvExtra) {
   Node *currNode;
   assert (oSymTable != NULL);
