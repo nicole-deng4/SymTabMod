@@ -77,8 +77,7 @@ void SymTable_free(SymTable_T oSymTable) {
   Node *nextNode;
   size_t i;
   assert(oSymTable != NULL);
-  for (i = 0; i < oSymTable -> totalNumBuckets; i++)
-  {
+  for (i = 0; i < oSymTable -> totalNumBuckets; i++) {
     currNode = oSymTable -> buckets [i];
     while (currNode != NULL) {
         nextNode = currNode -> next;
@@ -142,8 +141,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
     size_t hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
     newNode = (Node*) malloc (sizeof(Node));
     
-    if (newNode == NULL)
-    {
+    if (newNode == NULL) {
       return 0;
     }
     
