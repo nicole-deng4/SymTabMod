@@ -57,6 +57,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *newNode;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
+  assert (pvValue != NULL);
 
   if (!SymTable_contains (oSymTable, pcKey)) {
     newNode = (Node*) malloc (sizeof(Node));
@@ -91,6 +92,7 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvVa
   void *ogValue;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
+  assert (pvValue != NULL);
 
   currNode = oSymTable -> first;
   while (currNode != NULL) {
@@ -178,6 +180,7 @@ void SymTable_map(SymTable_T oSymTable, void (*pfApply)(const char *pcKey, void 
   Node *currNode;
   assert (oSymTable != NULL);
   assert (pfApply != NULL);
+  assert (pcValue != NULL);
   currNode = oSymTable -> first;
   while (currNode != NULL) {
     (*pfApply)(currNode -> key, currNode -> value, (void *) pvExtra);
