@@ -5,11 +5,11 @@
 
 typedef struct Node {
   char* key;
-  void value;
+  void* value;
   struct Node* next;
 };
 
-struct List {
+struct SymTable {
   struct Node *first;
   size_t length;
 };
@@ -17,7 +17,7 @@ struct List {
 typedef struct SymTable *SymTable_T;
 
 SymTable_T SymTable_new(void) {
-  SymTable_T symTable = (SymTable_T) malloc (sizeof (struct List));
+  SymTable_T symTable = (SymTable_T) malloc (sizeof (struct SymTable));
   if (symTable == NULL) {
     return NULL;
   }
@@ -63,7 +63,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
     }
     
     strcpy(newNode->key, pcKey);
-    newNode -> value = (void *)pvValue;
+    newNode -> value = pvValue;
     newNode -> next = oSymTable -> first;
     oSymTable -> first = newNode;
     oSymTable -> length++;
@@ -95,7 +95,7 @@ int SymTable_contains(SymTable_T oSymTable, const char *pcKey) {
   assert (oSymTable);
   assert (pcKey);
 
-  Node *currNode = OSymTable -> head;
+  Node *currNode = oSymTable -> head;
   while (currNode != NULL) {
     if (strcmp (currNode -> key, pcKey) == 0)
     {
@@ -110,7 +110,7 @@ void *SymTable_get(SymTable_T oSymTable, const char *pcKey) {
   assert (oSymTable);
   assert (pcKey);
   
-  Node *currNode = OSymTable -> head;
+  Node *currNode = oSymTable -> head;
   while (currNode != NULL) {
     if (strcmp (currNode -> key, pcKey) == 0)
     {
