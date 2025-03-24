@@ -102,6 +102,7 @@ static void SymTable_expand(SymTable_T oSymTable) {
     Node *currBucket;
     Node *nextBucket;
     size_t newIndex;
+    size_t i;
   
     if (oSymTable -> expandIndex >= NUM_PRIMES - 1 || oSymTable -> totalNumBuckets >= PRIME_BUCKET_SIZES[NUM_PRIMES - 1]) {
         return;
@@ -114,7 +115,7 @@ static void SymTable_expand(SymTable_T oSymTable) {
         return;
     }
     
-    for (size_t i = 0; i < oSymTable -> totalNumBuckets; i++) {
+    for (i = 0; i < oSymTable -> totalNumBuckets; i++) {
         currBucket = oSymTable -> buckets[i];
         while (currBucket != NULL) {
             nextBucket = currBucket -> next;
@@ -134,11 +135,12 @@ static void SymTable_expand(SymTable_T oSymTable) {
 /* Returns 1 if a new binding with key pcKey and value pvValue was successfully added to oSymTable, returns 0 if it was unsuccessful */
 int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *newNode;
+  size_t hashIndex;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
   
   if (!SymTable_contains (oSymTable, pcKey)) {
-    size_t hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
+    hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
     newNode = (Node*) malloc (sizeof(Node));
     
     if (newNode == NULL) {
@@ -173,10 +175,12 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
 void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *currBucket;
   void *ogValue;
+  size_t hashIndex;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
   assert (pvValue != NULL);
-  size_t hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
+  
+  hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
   currBucket = oSymTable -> buckets [hashIndex];
 
   while (currBucket != NULL) {
@@ -193,10 +197,11 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvVa
 /* Returns 1 if oSymTable has a binding for pcKey, returns 0 if it doesn't */
 int SymTable_contains(SymTable_T oSymTable, const char *pcKey) {
   Node *currBucket;
+  size_t hashIndex;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
   
-  size_t hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);
+  hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);
   currBucket = oSymTable -> buckets [hashIndex];
   while (currBucket != NULL) {
     if (strcmp (currBucket -> key, pcKey) == 0) {
@@ -210,10 +215,11 @@ int SymTable_contains(SymTable_T oSymTable, const char *pcKey) {
 /* Returns the value bound to pcKey or NULL if not found in oSymTable. */
 void *SymTable_get(SymTable_T oSymTable, const char *pcKey) {
   Node *currBucket;
+  size_t hashIndex;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
 
-  size_t hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);
+  hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);
   currBucket = oSymTable -> buckets [hashIndex];
   while (currBucket != NULL) {
     if (strcmp (currBucket -> key, pcKey) == 0) {
@@ -229,10 +235,11 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey) {
   Node *currBucket;
   Node *prevBucket;
   void *currValue;
+  size_t hashIndex;
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
 
-  size_t hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);  
+  hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);  
   currBucket = oSymTable -> buckets [hashIndex];  
   prevBucket = NULL;
     
