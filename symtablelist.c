@@ -15,7 +15,7 @@ typedef struct Node {
   void *value; 
   /* Pointer to the next node in the linked list. */
   struct Node *next; 
-} Node;
+} 
 
 /* Defines a symbol table structure. */
 struct SymTable {
