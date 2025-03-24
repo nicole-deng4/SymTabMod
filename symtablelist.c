@@ -185,6 +185,7 @@ void SymTable_map(SymTable_T oSymTable, void (*pfApply)(const char *pcKey, void 
   Node *currNode;
   assert (oSymTable != NULL);
   assert (pfApply != NULL);
+  assert (pvExtra != NULL);
   currNode = oSymTable -> first;
   while (currNode != NULL) {
     (*pfApply)(currNode -> key, currNode -> value, (void *) pvExtra);
