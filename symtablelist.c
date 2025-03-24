@@ -64,7 +64,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
     }
     
     strcpy(newNode -> key, pcKey);
-    newNode -> value = pvValue;
+    newNode -> value = (void *) pvValue;
     newNode -> next = oSymTable -> first;
     oSymTable -> first = newNode;
     oSymTable -> length++;
