@@ -54,11 +54,11 @@ static size_t SymTable_hash(const char *pcKey, size_t uBucketCount)
 /* Creates a new symbol table and returns a pointer to it */
 SymTable_T SymTable_new(void) {
     SymTable_T oSymTable = (SymTable_T) malloc (sizeof (struct SymTable));
-    if (symTable == NULL) {
+    if (osymTable == NULL) {
       return NULL;
     }
   
-    oSymTable -> totalNumBuckets = INITIAL_BUCKETS;
+    oSymTable -> totalNumBuckets = INITIAL_BUCKET_COUNT;
     oSymTable -> length = 0;
     oSymTable -> buckets = (Node **) calloc (oSymTable -> totalNumBuckets, sizeof(Node *));
 
@@ -68,8 +68,6 @@ SymTable_T SymTable_new(void) {
     }
     return oSymTable;
 }
-
-
 
 /* Frees all the memory taken by oSymTable */
 void SymTable_free(SymTable_T oSymTable) {
@@ -104,20 +102,22 @@ static void SymTable_expand(SymTable_T oSymTable) {
     Node *nextBucket;
     size_t newIndex;
   
-    if (oSymTable -> expandIndex >= NUM_PRIMES - 1)
+    if (oSymTable -> expandIndex >= NUM_PRIMES - 1) {
         return;
+    }
     
     newBucketCount = PRIME_BUCKET_SIZES [oSymTable -> expandIndex + 1];
+    
     newBuckets = (Node **) calloc (newBucketCount, sizeof(Node *));
     if (newBuckets == NULL) {
-        return 0;
+        return;
     }
     
     for (size_t i = 0; i < oSymTable -> totalNumBuckets; i++) {
         currBucket = oSymTable -> buckets[i];
         while (currBucket != NULL) {
             nextBucket = currBucket -> next;
-            newIndex = SymTable_hash(curr->key, newBucketCount);
+            newIndex = SymTable_hash(currBucket->key, newBucketCount);
             currBucket -> next = newBuckets[newIndex];
             newBuckets[newIndex] = currBucket;
             currBucket = next;
@@ -181,7 +181,7 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey, const void *pvVa
 
   while (currBucket != NULL) {
     if (strcmp (currBucket -> key, pcKey) == 0) {
-      currNode -> value = (void *) pvValue;
+      currBucket -> value = (void *) pvValue;
     }
     currBucket = currBucket -> next;
   }
@@ -194,7 +194,7 @@ int SymTable_contains(SymTable_T oSymTable, const char *pcKey) {
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
   
-  size_t hashIndex = SymTable_hash(pcKey, oSymTable->bucketCount);
+  size_t hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);
   currBucket = oSymTable -> buckets [hashIndex];
   while (currBucket != NULL) {
     if (strcmp (currBucket -> key, pcKey) == 0) {
@@ -211,7 +211,7 @@ void *SymTable_get(SymTable_T oSymTable, const char *pcKey) {
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
 
-  size_t hashIndex = SymTable_hash(pcKey, oSymTable->bucketCount);
+  size_t hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);
   currBucket = oSymTable -> buckets [hashIndex];
   while (currBucket != NULL) {
     if (strcmp (currBucket -> key, pcKey) == 0) {
@@ -261,7 +261,6 @@ void SymTable_map(SymTable_T oSymTable, void (*pfApply)(const char *pcKey, void 
   size_t i;
   assert (oSymTable != NULL);
   assert (pfApply != NULL);
-  assert (pvExtra != NULL);
 
   for (i = 0; i < oSymTable -> totalNumBuckets; i++) {
     currBucket = oSymTable -> buckets [i];
