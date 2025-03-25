@@ -94,6 +94,7 @@ size_t SymTable_getLength(SymTable_T oSymTable) {
   return (oSymTable -> length);
 }
 
+/*
 /* Expands the size of oSymTable if needed. */
 static void SymTable_expand(SymTable_T oSymTable) {
     size_t newBucketCount;
@@ -130,6 +131,7 @@ static void SymTable_expand(SymTable_T oSymTable) {
     oSymTable -> totalNumBuckets = newBucketCount;
     oSymTable -> expandIndex++;
 }
+*/
 
 /* Returns 1 if a new binding with key pcKey and value pvValue was successfully added to oSymTable, returns 0 if it was unsuccessful. */
 int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
