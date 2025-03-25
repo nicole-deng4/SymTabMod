@@ -94,9 +94,9 @@ size_t SymTable_getLength(SymTable_T oSymTable) {
   return (oSymTable -> length);
 }
 
-/*
+
 /* Expands the size of oSymTable if needed. */
-static void SymTable_expand(SymTable_T oSymTable) {
+/*static void SymTable_expand(SymTable_T oSymTable) {
     size_t newBucketCount;
     Node **newBuckets;
     Node *currBucket;
