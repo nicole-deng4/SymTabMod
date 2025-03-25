@@ -79,7 +79,7 @@ void SymTable_free(SymTable_T oSymTable) {
     currNode = oSymTable -> buckets [i];
     while (currNode != NULL) {
         nextNode = currNode -> next;
-        free (currNode->key);
+        free (currNode -> key);
         free (currNode);
         currNode = nextNode;
     }
@@ -119,9 +119,9 @@ static void SymTable_expand(SymTable_T oSymTable) {
         currBucket = oSymTable -> buckets[i];
         while (currBucket != NULL) {
             nextBucket = currBucket -> next;
-            newIndex = SymTable_hash(currBucket->key, newBucketCount);
-            currBucket -> next = newBuckets[newIndex];
-            newBuckets[newIndex] = currBucket;
+            newIndex = SymTable_hash (currBucket -> key, newBucketCount);
+            currBucket -> next = newBuckets [newIndex];
+            newBuckets [newIndex] = currBucket;
             currBucket = nextBucket;
         }
     }
@@ -142,7 +142,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   
   if (!SymTable_contains (oSymTable, pcKey)) {
     hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);
-    newNode = (Node*) malloc (sizeof(Node));
+    newNode = (Node*) malloc (sizeof (Node));
     
     if (newNode == NULL) {
       return 0;
@@ -158,7 +158,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
     strcpy(newNode -> key, pcKey);
     newNode -> value = (void *) pvValue;
     newNode -> next = oSymTable -> buckets [hashIndex];
-    oSymTable -> buckets[hashIndex] = newNode;
+    oSymTable -> buckets [hashIndex] = newNode;
     oSymTable -> length++;
     
     if (oSymTable -> length > oSymTable -> totalNumBuckets) {
@@ -239,7 +239,7 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey) {
   assert (oSymTable != NULL);
   assert (pcKey != NULL);
 
-  hashIndex = SymTable_hash(pcKey, oSymTable -> totalNumBuckets);  
+  hashIndex = SymTable_hash (pcKey, oSymTable -> totalNumBuckets);  
   currBucket = oSymTable -> buckets [hashIndex];  
   prevBucket = NULL;
     
