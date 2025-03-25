@@ -31,12 +31,11 @@ struct SymTable {
   size_t length; 
   /* The total number of buckets in the hash table. */
   size_t totalNumBuckets;
-
+  /* The current expansion size in the sequence of prime bucket sizes. */
   size_t expandIndex;
 };
 
-/* Return a hash code for pcKey that is between 0 and uBucketCount-1,
-   inclusive. */
+/* Return a hash code for pcKey that is between 0 and uBucketCount-1, inclusive. */
 static size_t SymTable_hash(const char *pcKey, size_t uBucketCount)
 {
    const size_t HASH_MULTIPLIER = 65599;
@@ -132,7 +131,7 @@ static void SymTable_expand(SymTable_T oSymTable) {
     oSymTable -> expandIndex++;
 }
 
-/* Returns 1 if a new binding with key pcKey and value pvValue was successfully added to oSymTable, returns 0 if it was unsuccessful */
+/* Returns 1 if a new binding with key pcKey and value pvValue was successfully added to oSymTable, returns 0 if it was unsuccessful. */
 int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
   Node *newNode;
   size_t hashIndex;
