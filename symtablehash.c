@@ -159,9 +159,9 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue) {
     oSymTable -> buckets[hashIndex] = newNode;
     oSymTable -> length++;
     
-    if (oSymTable -> length > oSymTable -> totalNumBuckets) {
+    /*if (oSymTable -> length > oSymTable -> totalNumBuckets) {
       SymTable_expand (oSymTable);
-    }
+    } */
     
     return 1;
     }
